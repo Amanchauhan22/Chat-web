@@ -6,9 +6,15 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.URL_ENDPOINT,
 });
 
-export default function handler(req, res) {
-  const authenticationParameters =
-    imagekit.getAuthenticationParameters();
+export default async function handler(req, res) {
+  try {
+    const authParams = imagekit.helper.getAuthenticationParameters();
 
-  res.status(200).json(authenticationParameters);
+    return res.status(200).json(authParams);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 }

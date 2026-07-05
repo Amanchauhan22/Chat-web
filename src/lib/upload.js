@@ -2,14 +2,16 @@ import axios from "axios";
 import imagekit from "../config/imagekit";
 
 const upload = async (file) => {
-  const { data } = await axios.get("/api/auth");
+  const auth = await axios.get("/api/auth");
+  console.log(auth.status);
+  console.log(auth.data);
 
   const response = await imagekit.upload({
     file,
     fileName: file.name,
-    token: data.token,
-    signature: data.signature,
-    expire: data.expire,
+    token: auth.data.token,
+    signature: auth.data.signature,
+    expire: auth.data.expire,
   });
 
   return response.url;
